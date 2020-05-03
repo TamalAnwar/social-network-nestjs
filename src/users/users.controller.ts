@@ -10,8 +10,15 @@ import {
 import { UsersService } from './users.service';
 import { User } from './interfaces/user.interface';
 import { CreateUserDTO } from './dto/create-user.dto';
+import {
+  ApiTags,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiDefaultResponse,
+} from '@nestjs/swagger';
 
 @Controller('users')
+@ApiTags('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
@@ -29,6 +36,8 @@ export class UsersController {
 
   // Create a new user
   @Post('create')
+  @ApiCreatedResponse({ description: 'User successfully created' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   async create(@Body() user: CreateUserDTO): Promise<User> {
     return this.userService.create(user);
   }
